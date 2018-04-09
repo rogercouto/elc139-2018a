@@ -38,7 +38,7 @@ void *dotprod_worker(void *arg)
    for (k = 0; k < dotdata.repeat; k++) {
       mysum = 0.0;
       for (i = start; i < end ; i++)  {
-         mysum += (a[i] * b[i]);
+        mysum += (a[i] * b[i]);
       }
    }
 

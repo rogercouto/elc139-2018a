@@ -111,6 +111,8 @@ Pode se notar um aumento grande no desempenho usando openmp
 Gráfico comparando:
 <img src="grafico3.png">
 
+Foi feito um teste de quantidade de operações totais realizadas para confirmar que o programa feito com openMP não estava fazendo menos repetições que deveria, mas o contador em ambos chegou ao mesmo número.
+
 <a name="referencias"></a>
 # Referências
 
