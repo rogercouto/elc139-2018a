@@ -156,11 +156,9 @@ int main(int argc, char** argv){
         prob = i;
         total = 0;
         queimadas = 0;
-        #pragma omp parallel for num_threads(4) schedule(dynamic)
         for (int j = 0; j < num_exec; j++){
             floresta_t* f = floresta_cria(tam_prob, tam_prob);
             comeca_incendio(f);
-            //printf("Probabilidade: %0.0f, Arvores: %d, Queimadas: %d\n",prob, f->total, f->queimadas);
             total = f->total;
             queimadas += f->queimadas;
             floresta_destroi(f);

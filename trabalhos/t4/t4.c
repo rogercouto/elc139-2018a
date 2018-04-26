@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#define NUM_THREADS 6
-#define N 10
+#define NUM_THREADS 4
+#define N 15
 #define TAM_VETOR NUM_THREADS*N
 
 //Prototipo das funcoes auxiliares
