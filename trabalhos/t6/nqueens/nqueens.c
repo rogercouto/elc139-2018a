@@ -68,35 +68,36 @@ int put_queen(int size, int queen_number, int* position) {
 
 void nqueens(int size, int *solutions) {
 	int i, count;
-	int* position;
 	
 	count = 0;
-	
-	for(i=0; i<size; i++) {
-		int j;
-		position = (int *) malloc(size * sizeof(int));
-		position[0] = i;
-		
-		for(j = 1; j < size; j++)
-			position[j] = -1;
-		
-		int queen_number = 1;
-		while(queen_number > 0) {
-			if(put_queen(size, queen_number, position)) {
-				queen_number++;
+	#pragma omp parallel private(i) num_threads(size)
+	{
+		int* position = (int *) malloc(size * sizeof(int));
+		for(i=0; i<size; i++) {
+			int j;
+			position[0] = i;
 			
-				if(queen_number == size) {
-					count += 1;
-					
-					position[queen_number-1] = -1;
-					queen_number -= 2;
+
+			for(j = 1; j < size; j++)
+				position[j] = -1;
+			
+			int queen_number = 1;
+			while(queen_number > 0) {
+				if(put_queen(size, queen_number, position)) {
+					queen_number++;
+				
+					if(queen_number == size) {
+						count += 1;
+						
+						position[queen_number-1] = -1;
+						queen_number -= 2;
+					}
+				} else {
+					queen_number--;
 				}
-			} else {
-				queen_number--;
 			}
 		}
 	}
-	
 	*solutions = count;
 }
 
