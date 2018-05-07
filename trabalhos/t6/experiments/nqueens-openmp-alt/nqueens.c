@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <omp.h>
 #include "nqueens.h"
 
 /* Checking information */
@@ -67,34 +67,31 @@ int put_queen(int size, int queen_number, int* position) {
 }
 
 void nqueens(int size, int *solutions) {
-	int i, count;
-	
+	int count;
+	int* position;
 	count = 0;
-	#pragma omp parallel private(i) num_threads(size)
+	//Cria uma thread para cada posição possível da primeira rainha
+	#pragma omp parallel num_threads(size) shared(solutions) private(position)
 	{
-		int* position = (int *) malloc(size * sizeof(int));
-		for(i=0; i<size; i++) {
-			int j;
-			position[0] = i;
-			
-
-			for(j = 1; j < size; j++)
-				position[j] = -1;
-			
-			int queen_number = 1;
-			while(queen_number > 0) {
-				if(put_queen(size, queen_number, position)) {
-					queen_number++;
-				
-					if(queen_number == size) {
+		int j;
+		position = (int *) malloc(size * sizeof(int));
+		position[0] = omp_get_thread_num();	//Adiciona a posição da primeira rainha conforme o número da thread
+		for(j = 1; j < size; j++)
+			position[j] = -1;
+		int queen_number = 1;
+		while(queen_number > 0) {
+			if(put_queen(size, queen_number, position)) {
+				queen_number++;
+				if(queen_number == size) {
+					#pragma omp critical
+					{
 						count += 1;
-						
 						position[queen_number-1] = -1;
 						queen_number -= 2;
 					}
-				} else {
-					queen_number--;
 				}
+			} else {
+				queen_number--;
 			}
 		}
 	}
@@ -104,5 +101,7 @@ void nqueens(int size, int *solutions) {
 int find_queens(int size) {
 	total_count=0;
 	nqueens(size, &total_count);
+	if (total_count != solutions[size-1])
+		printf("ERROR, wrong results- expected: %d, total: %d!\n", solutions[size-1],total_count);
 	return total_count;
 }
