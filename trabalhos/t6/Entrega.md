@@ -3,7 +3,7 @@
 # T6: N-Rainhas com OpenMP
 
 Disciplina: ELC139 - Programação Paralela <br/>
-Aluno: Rhauani Weber Aita Fazul e Roger Eduardo Couto
+Alunos: Rhauani Weber Aita Fazul e Roger Eduardo Couto
 
 
 ### Primeira solução
